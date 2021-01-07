@@ -6,7 +6,7 @@ class EventRouter {
 
 	addRoute(condition, route) {
 		if (this.routes[condition] == undefined) {
-			this.routes[condition] = { condition, routes: [ route ]};
+			this.routes[condition] = { if: condition, routes: [ route ]};
 			this.routeKeys.push(condition);
 		} else {
 			this.routes[condition].routes.push(route);
@@ -21,9 +21,8 @@ class EventRouter {
 		for(let i=0; i<this.routeKeys.length; i++) {
 			const routePath = this.routes[this.routeKeys[i]];
 
-			if (this.routes[this.routeKeys[i]].condition(event)) {
+			if (this.routes[this.routeKeys[i]].if(event)) {
 				for(let j=0; j<routePath.routes.length; j++) {
-					console.log(routePath.routes[j]);
 					routePath.routes[j].on(event);
 				}
 			}

@@ -4,7 +4,9 @@ const Configuration = require('./config/Configuration.js');
 const EventRouter = require('./event-router/EventRouter.js');
 const EventConditions = require('./event-router/Conditions.js');
 
+const CommandTransformPipeline = require('./commands/CommandTransformPipeline.js');
 const PingCommand = require('./commands/PingCommand.js');
+const RoleClaimCommand = require('./commands/RoleClaimCommand.js');
 
 class CalfBot {
 	getConfig() { return this.config; }
@@ -35,16 +37,17 @@ class CalfBot {
 		MessageRouter.addRoute(() => !EventConditions.isCommandMessage, TextMessageRouter);
 
 		// Command routes
-		CommandMessageRouter.addRoute(EventConditions.monitor, { on: (message) => { console.log(`CCM ${message.content}`); } })
+		CommandMessageRouter.addRoute(EventConditions.ALL, CommandTransformPipeline.commandTransformPipeline);
 		CommandMessageRouter.addRouteModule(PingCommand);
-		
+		CommandMessageRouter.addRouteModule(RoleClaimCommand);
+
 		// Public & public message routers
 		TextMessageRouter.addRoute(EventConditions.isPrivateMessage, PrivateMessageRouter);
 		TextMessageRouter.addRoute(EventConditions.isTextChannelMessage, TextChannelMessageRouter);
 
 		// Text message routes
-		PrivateMessageRouter.addRoute(EventConditions.monitor, { on: (message) => { console.log(message.content); } })
-		TextChannelMessageRouter.addRoute(EventConditions.monitor, { on: (message) => { console.log(message.content); } })
+		// PrivateMessageRouter.addRoute(EventConditions.monitor, { on: (message) => { console.log(message.content); } })
+		// TextChannelMessageRouter.addRoute(EventConditions.monitor, { on: (message) => { console.log(message.content); } })
 		this.discord.on('message', (message) => MessageRouter.on(message));
 
 		this.discord.login(this.config.getDiscordToken());
