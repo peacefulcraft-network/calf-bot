@@ -19,7 +19,7 @@ class Configuration {
 	getClaimableRoleByClaimName(claimName) {
 		const claimableRoles = this.config.discord_claimable_roles;
 		for(let i=0; i<claimableRoles.length; i++) {
-			if (claimableRoles[i].claim_name == claimName) {
+			if (claimableRoles[i].claim_name.toUpperCase() === claimName.toUpperCase()) {
 				return this.config.discord_claimable_roles[i];
 			}
 		}
@@ -31,7 +31,7 @@ class Configuration {
 	removeClaimableRoleByClaimName(claimName) {
 		const claimableRoles = this.config.discord_claimable_roles;
 		for(let i=0; i<claimableRoles.length; i++) {
-			if (claimableRoles[i].claim_name == claimName) {
+			if (claimableRoles[i].claim_name.toUpperCase() === claimName.toUpperCase()) {
 				this.config.discord_claimable_roles.splice(i, 1);
 				this.writeConfigFile();
 				break;
