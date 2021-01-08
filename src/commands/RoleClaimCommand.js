@@ -102,7 +102,6 @@ const claimClaimableRole = {
 	if: (event) => {
 		return (
 			event.command_content[1] === 'claim' &&
-			EventConditions.isRestrictedCommandMessage(event) &&
 			EventConditions.isTextChannelMessage(event)
 		);
 	},
@@ -130,7 +129,6 @@ const unclaimClaimableRole = {
 	if: (event) => {
 		return (
 			event.command_content[1] === 'unclaim' &&
-			EventConditions.isRestrictedCommandMessage(event) &&
 			EventConditions.isTextChannelMessage(event)
 		);
 	},
